@@ -9,7 +9,7 @@ class UserProfileInfo(models.Model):
     data_criacao = models.DateField()
     data_pagamento = models.DateField()
 
-    def __str__(self):
+    def __str__(self): 
         return self.user.username
 
 class Mesada(models.Model):

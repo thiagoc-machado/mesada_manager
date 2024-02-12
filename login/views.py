@@ -21,7 +21,7 @@ def my_login(request):
                 return redirect('kids')
             
         users = User.objects.all()
-        print(f"MEDIA_URL in context: {settings.MEDIA_URL}")
+        print(users)
         return render(request, 'login.html', {'users': users})
     
     elif request.method == "POST":
@@ -50,5 +50,7 @@ def my_login(request):
 
 def sair(request):
     logout(request)
-    return render(request, 'login.html')
+    users = User.objects.all()
+    return render(request, 'login.html', {'users': users})
+
 

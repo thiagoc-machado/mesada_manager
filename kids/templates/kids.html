@@ -1,1 +1,64 @@
-<h1>kids</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+            rel="stylesheet"
+            id="bootstrap-css"
+        />
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="{% static 'login/login.css' %}" rel="stylesheet" />
+        <title>Mesada Manager - Kids</title>
+    </head>
+    <h1>Bem vindo {{user}}</h1>
+    {% if mesadas_do_mes %}
+    <h2>Mesadas do mês de {{mes_atual}}</h2>
+    <h3>Valor da mesada fixa: €{{mesada_valor}}</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Motivo</th>
+                    <th>Acréscimos</th>
+                    <th>Descontos</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mesada in mesadas_do_mes %}
+                    <tr>
+                        <td>{{ mesada.nome }}</td>
+                        
+                        <td>
+                            {% if mesada.acrescimos != 0 %}
+                                {{ mesada.acrescimos }}
+                            {% endif %}
+                        </td>
+                        
+                        <td>
+                            {% if mesada.descontos != 0 %}
+                                {{ mesada.descontos }}
+                            {% endif %}
+                        </td>
+                        
+                        <td>{{ mesada.data_pagamento }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p>Total do Mês: {{ mesada_total }}</p>
+{% else %}
+    <p>Nenhuma mesada registrada este mês.</p>
+{% endif %}
+
+
+
+</html>
