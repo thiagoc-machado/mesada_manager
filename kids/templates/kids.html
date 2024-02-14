@@ -14,13 +14,14 @@
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link href="{% static 'login/login.css' %}" rel="stylesheet" />
+        {% comment %} <link href="{% static 'login/login.css' %}" rel="stylesheet" /> {% endcomment %}
         <title>Mesada Manager - Kids</title>
     </head>
     <h1>Bem vindo {{user}}</h1>
     {% if mesadas_do_mes %}
     <h2>Mesadas do mês de {{mes_atual}}</h2>
     <h3>Valor da mesada fixa: €{{mesada_valor}}</h3>
+    <h3>Total do Mês a receber: €{{ mesada_total }}<h3/>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -36,15 +37,19 @@
                     <tr>
                         <td>{{ mesada.nome }}</td>
                         
-                        <td>
-                            {% if mesada.acrescimos != 0 %}
+                        {% if mesada.acrescimos != 0 %}
+                            <td class = 'success'>
                                 {{ mesada.acrescimos }}
+                            {% else %}
+                                <td>
                             {% endif %}
                         </td>
                         
-                        <td>
-                            {% if mesada.descontos != 0 %}
+                        {% if mesada.descontos != 0 %}
+                            <td class= 'danger'>
                                 {{ mesada.descontos }}
+                        {% else %}
+                                <td>
                             {% endif %}
                         </td>
                         
@@ -54,7 +59,6 @@
             </tbody>
         </table>
     </div>
-    <p>Total do Mês: {{ mesada_total }}</p>
 {% else %}
     <p>Nenhuma mesada registrada este mês.</p>
 {% endif %}

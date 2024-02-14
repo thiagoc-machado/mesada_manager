@@ -43,7 +43,8 @@ def my_login(request):
                 return redirect('kids')
         else:
             messages.add_message(request, constants.ERROR, 'Usuário ou senha incorretos')
-            return render(request, 'login.html')
+            users = User.objects.all()
+            return render(request, 'login.html', {'users': users})
 
         # return HttpResponse(f'{username} {password} {remember}')
 
