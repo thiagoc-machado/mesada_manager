@@ -8,20 +8,38 @@ from users.models import Mesada, UserProfileInfo, Historico_mesada
 
 @admin_or_staff_required
 def parents(request):
-    users = User.objects.filter(is_staff=False)
-    mesadas = Mesada.objects.all()
-    mesada_valor = UserProfileInfo.objects.get(user=request.user).valor_mesada
-    locale.setlocale(locale.LC_TIME, 'pt_BR')
-    mes_atual = timezone.now().strftime('%B')
+    if request.method == 'POST':
+        # Handle form submission here
+        # You can access form data using request.POST.get('fieldname')
+        # Perform the necessary actions and redirect back to the same page
+
+        users = User.objects.filter(is_staff=False)
+        locale.setlocale(locale.LC_TIME, 'pt_BR')
+        mes_atual = timezone.now().strftime('%B')
+        userProfileInfo = UserProfileInfo.objects.all()
+        mesada = Mesada.objects.all()
+
+        context = {
+            'users': users,
+            'mes_atual': mes_atual,
+            'userProfileInfo': userProfileInfo,
+            'mesada': mesada,
+        }
+        return render(request, 'parents.html', context)
+
+    else:
+        users = User.objects.filter(is_staff=False)
+        locale.setlocale(locale.LC_TIME, 'pt_BR')
+        mes_atual = timezone.now().strftime('%B')
+        userProfileInfo = UserProfileInfo.objects.all()
+        mesada = Mesada.objects.all()
 
 
     context = {
         'users': users,
         'mes_atual': mes_atual,
-        'mesada_valor': mesada_valor,
-    #     'nome_mesadas': nome_mesadas,
-    #     'mesadas_do_mes': mesadas_do_mes,
-    #     'mesada_total': mesada_total,
+        'userProfileInfo': userProfileInfo,
+        'mesada': mesada,
     }
     return render(request, 'parents.html', context)
 
