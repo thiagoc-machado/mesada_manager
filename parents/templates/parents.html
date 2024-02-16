@@ -34,31 +34,33 @@
             </thead>
             <tbody>
                 {% for user in users %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.userprofileinfo.valor_mesada }}</td>
-                        <td>{{ user.acrescimos }}</td>
-                        <td>{{ user.mesada.descontos }}</td>
-                        <td>{{ user.userprofileinfo.total }}</td>
-                        <td class="d-flex align-items-center">
-                            <!-- Botões com classes do Bootstrap -->
-                            <button type="button" class="btn btn-info btn-sm me-2">Detalhes</button>
-                            <button type="button" class="btn btn-warning btn-sm me-2">Editar</button>
-                            <button type="button" class="btn btn-danger btn-sm me-2">Apagar</button>
-                        </td>
-                        <td>
-                            <!-- Formulário para lançar acrescimos/descontos -->
-                            <form method="post" action="{}">
-                                {% csrf_token %}
-                                <div class="d-flex">
-                                    <input type="text" class="form-control me-2" name="valor" placeholder="Valor">
-                                    <input type="text" class="form-control me-2" name="motivo" placeholder="Motivo">
-                                    <button type="submit" class="btn btn-success btn-sm me-2">Lançar Acrescimos</button>
-                                    <button type="submit" class="btn btn-danger btn-sm">Lançar Descontos</button>
-                                </div>
-                            </form>
-                        </td>
-                    </tr>
+                    {% for mesada_instance in user.mesada_set.all %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.userprofileinfo.valor_mesada }}</td>
+                            <td>{{ mesada_instance.acrescimos }}</td>
+                            <td>{{ mesada_instance.descontos }}</td>
+                            <td>{{ user.total_value }}</td>
+                            <td class="d-flex align-items-center">
+                                <!-- Botões com classes do Bootstrap -->
+                                <button type="button" class="btn btn-info btn-sm me-2">Detalhes</button>
+                                <button type="button" class="btn btn-warning btn-sm me-2">Editar</button>
+                                <button type="button" class="btn btn-danger btn-sm me-2">Apagar</button>
+                            </td>
+                            <td>
+                                <!-- Formulário para lançar acrescimos/descontos -->
+                                <form method="post" action="{}">
+                                    {% csrf_token %}
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control me-2" name="valor" placeholder="Valor">
+                                        <input type="text" class="form-control me-2" name="motivo" placeholder="Motivo">
+                                        <button type="submit" class="btn btn-success btn-sm me-2">Lançar Acrescimos</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Lançar Descontos</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>

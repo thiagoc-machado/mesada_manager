@@ -14,7 +14,7 @@ def kids(request):
         user = request.user
     try: 
         mesada_valor = UserProfileInfo.objects.get(user=user).valor_mesada
-        mesadas_do_mes = Mesada.objects.filter(usuario=user, data_criacao__month=timezone.now().month)
+        mesadas_do_mes = Mesada.objects.filter(user=user, data_criacao__month=timezone.now().month)
         mesada_subtotal = sum(mesada.acrescimos - mesada.descontos for mesada in mesadas_do_mes)
         mesada_total = mesada_subtotal + mesada_valor 
         nome_mesadas = [mesada.nome for mesada in mesadas_do_mes]

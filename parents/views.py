@@ -33,7 +33,12 @@ def parents(request):
         mes_atual = timezone.now().strftime('%B')
         userProfileInfo = UserProfileInfo.objects.all()
         mesada = Mesada.objects.all()
+        for user in users:
+            user.total_value = user.userprofileinfo.valor_mesada
 
+            for mesada_instance in user.mesada_set.all():
+                user.total_value += mesada_instance.acrescimos - mesada_instance.descontos
+                print(user.total_value)
 
     context = {
         'users': users,
