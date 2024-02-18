@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <h2>Bem vindo {{user}}</h2>
+    <h2>Bem-vindo {{user}}</h2>
     <div class="table-responsive">
         <h4>Crianças cadastradas</h4>
         <h5>Mesadas do mês de {{mes_atual}}</h5>
@@ -33,34 +33,34 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user in users %}
-                    {% for mesada_instance in user.mesada_set.all %}
-                        <tr>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.userprofileinfo.valor_mesada }}</td>
-                            <td>{{ mesada_instance.acrescimos }}</td>
-                            <td>{{ mesada_instance.descontos }}</td>
-                            <td>{{ user.total_value }}</td>
-                            <td class="d-flex align-items-center">
-                                <!-- Botões com classes do Bootstrap -->
-                                <button type="button" class="btn btn-info btn-sm me-2">Detalhes</button>
-                                <button type="button" class="btn btn-warning btn-sm me-2">Editar</button>
-                                <button type="button" class="btn btn-danger btn-sm me-2">Apagar</button>
-                            </td>
-                            <td>
-                                <!-- Formulário para lançar acrescimos/descontos -->
-                                <form method="post" action="{}">
-                                    {% csrf_token %}
-                                    <div class="d-flex">
-                                        <input type="text" class="form-control me-2" name="valor" placeholder="Valor">
-                                        <input type="text" class="form-control me-2" name="motivo" placeholder="Motivo">
-                                        <button type="submit" class="btn btn-success btn-sm me-2">Lançar Acrescimos</button>
-                                        <button type="submit" class="btn btn-danger btn-sm">Lançar Descontos</button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                {% for user_total in user_totals %}
+                    <tr>
+                        <td>{{ user_total.user.username }}</td>
+                        <td>{{ user_total.user.userprofileinfo.valor_mesada }}</td>
+                        <td>{{ user_total.user_acrescimos }}</td>
+                        <td>{{ user_total.user_descontos }}</td>
+                        <td>{{ user_total.user_total_value }}</td>
+                        <td class="d-flex align-items-center">
+                            <!-- Botões com classes do Bootstrap -->
+                            <input type="hidden" name="user_id" value="{{ user_total.user.id }}">
+                            <button type="submit" name="details" class="btn btn-info btn-sm me-2">Detalhes</button>
+                            <button type="submit" name="edit" class="btn btn-warning btn-sm me-2">Editar</button>
+                            <button type="submit" name="delete" class="btn btn-danger btn-sm me-2">Apagar</button>
+                        </td>
+                        <td>
+                            <!-- Formulário para lançar acrescimos/descontos -->
+                            <form method="post" action="{% url 'parents' %}">
+                                {% csrf_token %}
+                                <div class="d-flex">
+                                    <input type="hidden" name="user_id" value="{{ user_total.user.id }}">
+                                    <input type="number" class="form-control me-2" name="valor" placeholder="Valor">
+                                    <input type="text" class="form-control me-2" name="motivo" placeholder="Motivo">
+                                    <button type="submit" name="acrescimos" class="btn btn-success btn-sm me-2">Lançar Acrescimos</button>
+                                    <button type="submit" name="descontos" class="btn btn-danger btn-sm">Lançar Descontos</button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>

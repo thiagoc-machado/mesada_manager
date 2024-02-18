@@ -17,9 +17,9 @@
         {% comment %} <link href="{% static 'login/login.css' %}" rel="stylesheet" /> {% endcomment %}
         <title>Mesada Manager - Kids</title>
     </head>
-    <h1>Bem vindo {{user}}</h1>
+    <h1>Olá {{user}}, como você está hoje?</h1>
     {% if mesadas_do_mes %}
-    <h2>Mesadas do mês de {{mes_atual}}</h2>
+    <h2>Mesada do mês de {{mes_atual}}</h2>
     <h3>Valor da mesada fixa: €{{mesada_valor}}</h3>
     <h3>Total do Mês a receber: €{{ mesada_total }}<h3/>
     <div class="table-responsive">

@@ -14,7 +14,7 @@ class UserProfileInfo(models.Model):
 
 class Mesada(models.Model):
     nome = models.CharField(max_length=100)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     data_criacao = models.DateField()
     data_pagamento = models.DateField()
     descontos = models.DecimalField(max_digits=10, decimal_places=2)

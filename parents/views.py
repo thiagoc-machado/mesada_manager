@@ -1,31 +1,77 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .permissions import admin_or_staff_required
 from django.utils import timezone
 import locale
-
 from users.models import Mesada, UserProfileInfo, Historico_mesada
 
 @admin_or_staff_required
 def parents(request):
     if request.method == 'POST':
-        # Handle form submission here
-        # You can access form data using request.POST.get('fieldname')
-        # Perform the necessary actions and redirect back to the same page
-
         users = User.objects.filter(is_staff=False)
         locale.setlocale(locale.LC_TIME, 'pt_BR')
         mes_atual = timezone.now().strftime('%B')
         userProfileInfo = UserProfileInfo.objects.all()
         mesada = Mesada.objects.all()
 
-        context = {
-            'users': users,
-            'mes_atual': mes_atual,
-            'userProfileInfo': userProfileInfo,
-            'mesada': mesada,
-        }
-        return render(request, 'parents.html', context)
+        user_id = request.POST.get('user_id')
+        valor = request.POST.get('valor')
+        motivo = request.POST.get('motivo')
+
+        # Obter o último dia do mês atual
+        firt_day_current_month = timezone.now().replace(day=1) + timezone.timedelta(days=32)
+        last_day_current_month = firt_day_current_month.replace(day=1) - timezone.timedelta(days=1)
+
+        # Check for button presence
+        if 'acrescimos' in request.POST:
+            print("acrescimos")
+            print("User ID:", user_id)
+            print("Valor:", valor)
+            print("Motivo:", motivo)
+
+            Mesada.objects.create(
+                user_id=user_id,
+                acrescimos=float(valor),
+                descontos=0,
+                nome=motivo,
+                data_criacao=timezone.now(),
+                data_pagamento=last_day_current_month,
+            )
+
+        elif 'descontos' in request.POST:
+
+            Mesada.objects.create(
+                user_id=user_id,
+                descontos=float(valor),
+                acrescimos=0,
+                nome=motivo,
+                data_criacao=timezone.now(),
+                data_pagamento=last_day_current_month,
+            )
+
+        elif 'details' in request.POST:
+            print("details")
+            print("User ID:", user_id)
+
+        elif 'delete' in request.POST:
+            print("delete")
+            print("User ID:", user_id)
+
+        elif 'edit' in request.POST:
+            print("edit")
+            print("User ID:", user_id)
+
+            Mesada.objects.filter(id=user_id).update(
+                acrescimos=float(valor),
+                descontos=0,
+                nome=motivo,
+                data_criacao=timezone.now(),
+                data_pagamento=last_day_current_month,
+            )
+
+        return redirect('parents')
+    
+
 
     else:
         users = User.objects.filter(is_staff=False)
@@ -33,18 +79,65 @@ def parents(request):
         mes_atual = timezone.now().strftime('%B')
         userProfileInfo = UserProfileInfo.objects.all()
         mesada = Mesada.objects.all()
+
+        # Calculate total value for each user
+        user_totals = []
         for user in users:
-            user.total_value = user.userprofileinfo.valor_mesada
+            user_total_value = user.userprofileinfo.valor_mesada
+            user_acrescimos = 0
+            user_descontos = 0
 
             for mesada_instance in user.mesada_set.all():
-                user.total_value += mesada_instance.acrescimos - mesada_instance.descontos
-                print(user.total_value)
+                user_acrescimos += mesada_instance.acrescimos
+                user_descontos += mesada_instance.descontos
 
-    context = {
-        'users': users,
-        'mes_atual': mes_atual,
-        'userProfileInfo': userProfileInfo,
-        'mesada': mesada,
-    }
-    return render(request, 'parents.html', context)
+            user_total_value += user_acrescimos - user_descontos
+
+            user_totals.append({
+                'user': user,
+                'user_acrescimos': user_acrescimos,
+                'user_descontos': user_descontos,
+                'user_total_value': user_total_value,
+            })
+
+        context = {
+            'user_totals': user_totals,
+            'mes_atual': mes_atual,
+        }
+        return render(request, 'parents.html', context)
+
+
+
+    # else:
+    #     users = User.objects.filter(is_staff=False)
+    #     locale.setlocale(locale.LC_TIME, 'pt_BR')
+    #     mes_atual = timezone.now().strftime('%B')
+    #     userProfileInfo = UserProfileInfo.objects.all()
+    #     mesada = Mesada.objects.all()
+
+    #     # Calculate total value for each user
+    #     user_totals = []
+    #     for user in users:
+    #         user_total_value = user.userprofileinfo.valor_mesada
+    #         user_acrescimos = 0
+    #         user_descontos = 0
+
+    #         for mesada_instance in user.mesada_set.all():
+    #             user_acrescimos += mesada_instance.acrescimos
+    #             user_descontos += mesada_instance.descontos
+
+    #         user_total_value += user_acrescimos - user_descontos
+
+    #         user_totals.append({
+    #             'user': user,
+    #             'user_acrescimos': user_acrescimos,
+    #             'user_descontos': user_descontos,
+    #             'user_total_value': user_total_value,
+    #         })
+
+    #     context = {
+    #         'user_totals': user_totals,
+    #         'mes_atual': mes_atual,
+    #     }
+    #     return render(request, 'parents.html', context)
 
