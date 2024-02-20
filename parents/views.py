@@ -17,12 +17,9 @@ def parents(request):
         user_id = request.POST.get('user_id')
         valor = request.POST.get('valor')
         motivo = request.POST.get('motivo')
-
-        # Obter o último dia do mês atual
         firt_day_current_month = timezone.now().replace(day=1) + timezone.timedelta(days=32)
         last_day_current_month = firt_day_current_month.replace(day=1) - timezone.timedelta(days=1)
 
-        # Check for button presence
         if 'acrescimos' in request.POST:
             print("acrescimos")
             print("User ID:", user_id)
@@ -39,7 +36,6 @@ def parents(request):
             )
 
         elif 'descontos' in request.POST:
-
             Mesada.objects.create(
                 user_id=user_id,
                 descontos=float(valor),
@@ -80,7 +76,6 @@ def parents(request):
         userProfileInfo = UserProfileInfo.objects.all()
         mesada = Mesada.objects.all()
 
-        # Calculate total value for each user
         user_totals = []
         for user in users:
             user_total_value = user.userprofileinfo.valor_mesada
