@@ -2,12 +2,15 @@ version: '3'
 
 services:
   web:
-    image: python:3.8
-    command: bash -c "pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
+    build: .
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
-    start: python manage.py runserver 0.0.0.0:8000
+
+  db:
+    image: sqlite:latest
+    volumes:
+      - ./db:/db
