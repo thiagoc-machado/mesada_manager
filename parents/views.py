@@ -9,7 +9,7 @@ from users.models import Mesada, UserProfileInfo, Historico_mesada
 def parents(request):
     if request.method == 'POST':
         users = User.objects.filter(is_staff=False)
-        # locale.setlocale(locale.LC_TIME, 'es_ES')
+        # locale.setlocale(locale.LC_TIME, 'pt_BR')
         mes_atual = timezone.now().strftime('%B')
         userProfileInfo = UserProfileInfo.objects.all()
         mesada = Mesada.objects.all()
