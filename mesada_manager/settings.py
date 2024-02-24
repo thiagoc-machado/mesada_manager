@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'parents',
     'users',
     'login',
+    'backup_app',
 ]
 
 MIDDLEWARE = [
