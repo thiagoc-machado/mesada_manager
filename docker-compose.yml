@@ -11,6 +11,6 @@ services:
       - db
 
   db:
-    image: sqlite:latest
+    image: alpine
     volumes:
       - ./db:/db
