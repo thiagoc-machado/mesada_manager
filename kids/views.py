@@ -2,14 +2,19 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 import locale
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 from users.models import Mesada, UserProfileInfo, Historico_mesada
 
 @login_required
 def kids(request):
     user = request.user
-    if user.is_staff:
-        user = request.user
+    if request.user.is_staff:
+        print("is staff")
+        user = get_object_or_404(User, id=user.id)
+        print (user.username)
+        print (user.id)
     else:
         user = request.user
     try: 
@@ -18,7 +23,7 @@ def kids(request):
         mesada_subtotal = sum(mesada.acrescimos - mesada.descontos for mesada in mesadas_do_mes)
         mesada_total = mesada_subtotal + mesada_valor 
         nome_mesadas = [mesada.nome for mesada in mesadas_do_mes]
-        locale.setlocale(locale.LC_TIME, 'pt_BR')
+        locale.setlocale(locale.LC_TIME, 'es_ES')
         mes_atual = timezone.now().strftime('%B')
 
 

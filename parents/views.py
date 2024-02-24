@@ -100,39 +100,3 @@ def parents(request):
             'mes_atual': mes_atual,
         }
         return render(request, 'parents.html', context)
-
-
-
-    # else:
-    #     users = User.objects.filter(is_staff=False)
-    #     locale.setlocale(locale.LC_TIME, 'es_ES')
-    #     mes_atual = timezone.now().strftime('%B')
-    #     userProfileInfo = UserProfileInfo.objects.all()
-    #     mesada = Mesada.objects.all()
-
-    #     # Calculate total value for each user
-    #     user_totals = []
-    #     for user in users:
-    #         user_total_value = user.userprofileinfo.valor_mesada
-    #         user_acrescimos = 0
-    #         user_descontos = 0
-
-    #         for mesada_instance in user.mesada_set.all():
-    #             user_acrescimos += mesada_instance.acrescimos
-    #             user_descontos += mesada_instance.descontos
-
-    #         user_total_value += user_acrescimos - user_descontos
-
-    #         user_totals.append({
-    #             'user': user,
-    #             'user_acrescimos': user_acrescimos,
-    #             'user_descontos': user_descontos,
-    #             'user_total_value': user_total_value,
-    #         })
-
-    #     context = {
-    #         'user_totals': user_totals,
-    #         'mes_atual': mes_atual,
-    #     }
-    #     return render(request, 'parents.html', context)
-
