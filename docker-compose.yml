@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   web:
     image: python:3.8
@@ -8,3 +10,4 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    start: python manage.py runserver 0.0.0.0:8000
