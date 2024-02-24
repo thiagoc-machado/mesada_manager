@@ -23,7 +23,7 @@ def kids(request):
         mesada_subtotal = sum(mesada.acrescimos - mesada.descontos for mesada in mesadas_do_mes)
         mesada_total = mesada_subtotal + mesada_valor 
         nome_mesadas = [mesada.nome for mesada in mesadas_do_mes]
-        locale.setlocale(locale.LC_TIME, 'es_ES')
+        # locale.setlocale(locale.LC_TIME, 'es_ES')
         mes_atual = timezone.now().strftime('%B')
 
 
