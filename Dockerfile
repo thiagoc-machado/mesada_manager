@@ -13,4 +13,4 @@ COPY . .
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate
 
-CMD ["gunicorn", "dineapp.wsgi:application"]
+CMD ["gunicorn", "mesada-manager.wsgi:application"]
