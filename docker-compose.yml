@@ -1,8 +1,17 @@
 version: '3'
+
 services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: example
   web:
     build: .
-    ports:
-      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+    ports:
+      - '8000:8000'
+    environment:
+      DJANGO_DB_ENGINE: django.db.backends.sqlite3
+      DJANGO_DB_NAME: /app/db.sqlite3
