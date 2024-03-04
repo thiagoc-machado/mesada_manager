@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn dineapp.wsgi
+web: python manage.py migrate && gunicorn mesada-manager.wsgi
