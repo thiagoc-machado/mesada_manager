@@ -1,16 +1,17 @@
-FROM python:3.11.4
+FROM python:3.11.8-alpine3.19
 
-WORKDIR /app
+ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
+WORKDIR /App
 
-RUN pip install --upgrade pip
+RUN apk update \
+    && apk add --no-cache gcc musl-dev postgresql-dev python3-dev libffi-dev \
+    && pip install --upgrade pip
+
+COPY ./requirements.txt ./
 
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY ./ ./
 
-RUN python manage.py collectstatic --noinput
-RUN python manage.py migrate
-
-CMD ["gunicorn", "mesada_manager.wsgi:application"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
