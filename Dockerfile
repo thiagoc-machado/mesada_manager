@@ -12,9 +12,9 @@ RUN apk update \
   # CFFI dependencies
   && apk add libffi-dev py-cffi \
   # Translations dependencies
-  && apk add gettext \
+  && apk add gettext
   # https://docs.djangoproject.com/en/dev/ref/django-admin/#dbshell
-#   && apk add postgresql-client
+  # && apk add postgresql-client
 
 RUN mkdir /app
 WORKDIR /app
