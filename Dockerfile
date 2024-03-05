@@ -1,26 +1,17 @@
-FROM python:3.11.8-alpine3.19
+FROM python:3.10.4-alpine3.15
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
 
-RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev \
-    && apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev libffi-dev py-cffi gettext
-
-RUN mkdir /app
 WORKDIR /app
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN  apk update \
+	&& apk add --no-cache gcc musl-dev postgresql-dev python3-dev libffi-dev \
+	&& pip install --upgrade pip
 
-COPY . /app/
+COPY ./requirements.txt ./
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+RUN pip install -r requirements.txt
 
-# Apply database migrations
-RUN python manage.py migrate
+COPY ./ ./
 
-
-# Start the development server
-CMD ["python", "manage.py", "runserver"]
+CMD ["sh", "entrypoint.sh"]
