@@ -23,4 +23,4 @@ RUN python manage.py migrate
 
 
 # Start the development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:$PORT"]
+CMD ["python", "manage.py", "runserver"]
